@@ -1,0 +1,623 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Course UI</title>
+	<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+<style>
+	@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+	/*Navbar and bread crumbs*/  
+	#body-content {overflow: hidden;}
+
+	.topic-list {
+		box-shadow: beige;
+		border-color: rgb(21, 20, 114);
+		border-width: 2px;
+		border-style: double;
+		margin: 20px 0px 0px 0px;
+		border-radius: 6px;
+	}
+
+	.topic-list:hover{
+		box-shadow: 0 0 11px rgba(33,33,33,.2);
+		background-color: white;
+	}
+	.topic-list p{
+		color: rgb(21, 20, 114);
+	}
+	.video{
+		width: 80%;
+	}
+	.pg_btn{
+	color: #F4AF47;
+	}
+	@keyframes bounce {
+	0%, 100%, 20%, 50%, 80% {
+		-webkit-transform: translateY(0);
+		-ms-transform:     translateY(0);
+		transform:         translateY(0)
+	}
+	40% {
+		-webkit-transform: translateY(-30px);
+		-ms-transform:     translateY(-30px);
+		transform:         translateY(-30px)
+	}
+	60% {
+		-webkit-transform: translateY(-15px);
+		-ms-transform:     translateY(-15px);
+		transform:         translateY(-15px)
+	}
+	}
+
+
+	/*video*/
+	.vid{
+	align-content: center;
+	position: absolute;
+	margin: 40px 20px 0px 100px; 
+	width: 85%;
+	height: 75%; 
+	}
+	/*checkbox*/
+	.ui_list{
+		margin: 20px 20px 20px 20px;
+	}
+	.main{
+		background-color: #002333;
+		display : flex;
+		margin-top : 5px;
+	}
+	.toprow{
+		margin-top : 10px;
+		margin-left: 100px;
+		width: 100%;
+		
+		
+		color: white;
+		font-size: 15px;
+		height : 500px;
+		overflow-y: scroll;
+	}
+	.lecture-list{
+		margin-left: 100px;
+		margin-top : 10px;
+		
+		width: 100%;
+		color: white;
+		font-size: 20px;
+	}
+	.duration{
+		margin-left:10px;
+		font-size: 1.2em;
+		font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+		padding-top : 5px;
+	}
+	.title{
+		display : inline-block;
+		margin-left: 10px;
+		margin-top: 5px;
+		width: 75%;
+	}
+	.lec-duration{
+		display: inline-block;
+		
+		
+	}
+	.lec-title:hover{
+		cursor: pointer;
+		border: 1px solid grey;
+		border-radius : 10px;
+
+	}
+	.lec-title{
+		height : 40px;
+		margin-top : 5px;
+		margin-bottom: 5px;
+	}
+
+	#course-img{
+		height : 500px;
+		width : 800px;
+		margin-top: 10px;
+		margin-bottom:10px;
+		
+		
+	}
+
+
+	/*skills*/
+	.skills{
+		width : 100%;
+		margin:20px;
+	}
+	.btn-skills{
+		display: block;
+		background-color: #CB8A29;
+		color: white;
+		border-radius: 30px;
+		align-content: center;
+		font-weight: normal;
+		font-size: 1.5em;
+		font-family: "Times New Roman", Times, serif;
+		text-align: center;
+		margin:0px 20px 10px 80px;
+	}
+	.btn-langs{
+		height:40px;
+		width : 85px;
+		background-color: #ECFCFD;
+		border-radius: 25px;
+		font-weight: normal;
+		font-size: 1.0em;
+		font-family: "Times New Roman", Times, serif;
+		color: #CB8A29;
+		padding-bottom:10px;
+		margin-bottom:10px;
+		margin-left: 15px;
+
+	}
+	.btn-langxl{
+		height:40px;
+		width : 120px;
+		background-color: #ECFCFD;
+		border-radius: 20px;
+		font-weight: normal;
+		font-size: 1.0em;
+		font-family: "Times New Roman", Times, serif;
+		color: #CB8A29;
+		padding-bottom:10px;
+		margin-bottom:10px;
+		margin-left: 10px;
+		margin-top:5px;
+
+	}
+	/*instructor*/
+	.instructor{
+		width : 75%;
+		border-style: solid;
+		border-color: #CB8A29;
+		margin:25px;
+	}
+	.message{
+		color: #CB8A29;
+		font-weight: normal;
+		font-size: 1.2em;
+		font-family: "Times New Roman", Times, serif;
+		margin-left: 5px;
+		
+	}
+	.messageArea{
+		background-color: #F3D8B9;
+		border-color:  #CB8A29;
+		width: 90%;
+		margin: 2px 0px 0px 5px;
+	}
+	.btnsend{
+		font-weight : bold;
+		background-color:  #CB8A29;
+		margin: 10px;
+	}
+	/*main*/
+
+	.super_container
+	{
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.rcorner {
+	border-radius: 25px;
+	border: 2px solid #D5921D;
+	padding: 10px;
+	margin-top:20px; 
+	}
+	.card{
+		border: none;
+		width: 80%;
+		margin-left: 60px; 
+	}
+	.card-body{
+		color: #5C59D5;
+	}
+	h5{
+		color: #5C59D5;
+	}
+	.syl_btn{
+		margin: 5px;
+	}
+
+	/*Slider*/
+	.swiper-container {
+	width: 100%;
+	height: 350px;
+	margin-top: 40px;
+	max-width: 98vw;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	transition: 0.5s;
+	}
+	.swiper-container .swiper-wrapper .swiper-slide:hover {
+	transform: scale(1.1);
+	}
+	.swiper-container .swiper-wrapper .swiper-slide:before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #f3d8b9;
+	z-index: 1;
+	transition: 0.5s;
+	}
+	.swiper-container .swiper-wrapper .swiper-slide:hover:before {
+	transform: scaleY(1.12);
+	}
+	.swiper-container .swiper-wrapper .swiper-slide:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	transition: 0.5s;
+	background: rgba(255, 255, 255, 0.1);
+	z-index: 1;
+	}
+	.swiper-container .swiper-wrapper .swiper-slide:hover:after {
+	transform: scaleY(1);
+	}
+	.swiper-container .swiper-wrapper.swiper-slide:hover {
+	z-index: 1;
+	}
+	.swiper-container .swiper-wrapper .swiper-slide div {
+	text-align: center;
+	z-index: 2;
+	padding: 0;
+	margin: 0;
+	transition: 0.5s;
+	background-color: rgb(11, 49, 154);
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 30%;
+	color: white;
+	}
+	.swiper-container .swiper-wrapper .swiper-slide div h5 {
+	border-bottom: 1px solid rgb(0, 140, 255);
+	}
+	.swiper-slide a,
+	.swiper-slide a i {
+	position: absolute;
+	top: 10px;
+	right: 20px;
+	color: rgb(255, 255, 255);
+	height: 5px;
+	width: 5px;
+	z-index: 2;
+	}
+
+	.swiper-container h2 {
+	font-weight: 500;
+	position: relative;
+	top: 0px;
+	padding-bottom: 30px;
+	text-align: center;
+	color: gray;
+	}
+
+	.swiper-slide {
+	text-align: center;
+	font-size: 18px;
+	background: #f4af47;
+
+	/* Center slide text vertically */
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	}
+	/*footer*/
+	.footer{
+	width: 100%;
+	background-color: #A6ACAF;
+	margin-top: 20px;
+	overflow: hidden;
+	}
+	.social{
+	margin-top: 20px;
+	}
+	.gap_u{
+	margin: 20px;
+	}
+	.gap_l{
+	margin-left: 35px; 
+	}
+	.cr
+	{
+	font-family: Times New Roman;
+	font-size: 75%;
+	font-weight:bold;
+	margin-top: 20px; 
+	}
+	#course_list:hover {
+		cursor: pointer;
+	}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.css" />
+<link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css" />
+</head>
+<body>
+<div class="super_container">
+
+             <!--Navbar Start-->
+        <nav class="navbar navbar-expand-lg navbar-dark" style ="background-color: #002333;">
+ 			<a class="navbar-brand" href="/academy">
+    			<img src="{% static 'images/Caramellogo.png' %}" width="150" height="40" alt="LOGO">
+  			</a>
+  			<!-- Collapse button -->
+  			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+  			<!-- Collapsible content -->
+			<div class="collapse navbar-collapse" id="basicExampleNav">
+			    <!-- Links -->
+			    <ul class="navbar-nav ml-auto">
+			     	<li class="nav-item active">
+			        	<a class="nav-link" href="/">IT Services Solution</a>
+			      	</li>
+				    <!-- Dropdown -->
+				    <li class="nav-item dropdown">
+				       <a class="nav-link dropdown-toggle active" id="course_list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
+				    <div class="dropdown-menu dropdown-primary" aria-labelledby="course_list">
+				        <a class="dropdown-item" href="#">UI Courses</a>
+				        <a class="dropdown-item" href="#">Backend</a>
+				        <a class="dropdown-item" href="#">IT</a>
+				    </div>
+				    </li>
+				    <li class="nav-item active">
+			        	<a class="nav-link" href="/contact/academycontact">Contact Us</a>
+				    </li>
+			    </ul>
+			</div>
+		</nav>
+
+	<!-- bread crumb -->
+            	<div class="row container-fluid">
+	            	<div class="row container">
+	                	<div class="col topic-list">
+	                        <p>{{ course.category_name }}
+	                        <i class="fa fa-arrow-right fa-2x float-right pg_btn"></i>
+	                        </p>	
+	                   	</div>
+	               		<div class="col topic-list">
+	               			<p>{{ course.subcategory_name }}
+		                    <i class="fa fa-arrow-right fa-2x float-right pg_btn"></i>
+		                    </p>	
+	                   	</div>
+		                <div class="col topic-list">
+		                    <p>{{ course.course_name }}<i class="fa fa-arrow-down fa-2x float-right pg_btn"></i></p>
+		                </div>
+		            </div>
+            	</div>
+		<!-- First Half -->
+        <div class="container-fluid main">
+            <div class="row container-fluid">
+                <div class="col-md-8">
+                    <div class="newDiv">
+					<video id="course-img" controls>
+						<!-- Set this to the first video -->
+						<source src='{{ resources.resourse_length }}' type='video/mp4'>
+					</video>
+					</div>
+                </div>
+                
+                
+                <div class = "col-md-4">
+                    <div class = "lecturelist">
+                    
+                    <div class="toprow">
+                    <div class = "duration">
+                        {{ lectures }} Lectures
+                    </div>
+					
+					{% for resource in course_resource %}
+                    <div class="lec-title" id="{{ resource.resourse_name }}">
+                        <div class = "title" > {{ resource.resourse_name }}</div>
+                        <div class= "lec-duration">{{ resource.resourse_length }}</div>
+					</div>
+					<script>
+						video = document.getElementById("course-img");
+						button = document.getElementById("{{ resource.resourse_name }}");
+						button.addEventListener("click", function (){
+							// Change this to the video source for the lecture
+							video.innerHTML = "<source src='{{ resource.resourse_length }}' type='video/mp4'>"
+						});
+					</script>
+					{% endfor %}
+                         
+            
+        </div>    
+        </div>
+         </div>
+        </div>
+        </div>
+        	<!-- Second Half -->
+			<div class="row container-fluid">
+			<!-- Syllabus -->
+				<div class="col-md-8">
+					<div id="accordion">
+						<div class="card">
+						    <div class="rcorner" id="headingOne">
+						    	<h5> What will you learn
+						        <i class="fa fa-arrow-down syl_btn float-right" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></i>
+						    	</h5>
+						    </div>
+						    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+						      <div class="card-body">
+						        Pure and Transparent code is devoid of redundant components.<br>
+						        This Means also mobile devices where the navigation is easy and intuitive in a desktop or laptop.<br>
+						        Core UI Layout API Lets you custiomize your project for almost any device - be it mobile webapp or web.<br>
+						        Core UI is the fastest way to build a modern dashboard for any platforms , browser or device<br>
+						        Core UI- Admin Kit is not just another admin template<br>
+						        It goes way beyond hitherto admin templates thanks to transparent code and file structure<br>
+						      </div>
+						    </div>
+						</div>
+						<div class="card">
+						    <div class="rcorner" id="headingTwo">
+						    	<h5> Practice Assignments
+						        <i class="fa fa-arrow-down syl_btn float-right" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"></i>
+						    	</h5>
+						    </div>
+						    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+						      <div class="card-body">
+						      	Content2
+						      </div>
+						    </div>
+						</div>
+						<div class="card">
+						    <div class="rcorner" id="headingThree">
+						       <h5> Technical Scenarios
+						        <i class="fa fa-arrow-down syl_btn float-right" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"></i>
+						    	</h5>
+						    </div>
+						    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+						      <div class="card-body">
+						        Content 3
+						      </div>
+						    </div>
+						</div>
+						<div class="card">
+						    <div class="rcorner" id="headingFour">
+						       <h5> Mini Project
+						        <i class="fa fa-arrow-down syl_btn float-right" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"></i>
+						    	</h5>
+						    </div>
+						    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+						      <div class="card-body">
+						        Content 4
+						      </div>
+						    </div>
+						</div>
+						<div class="card">
+						    <div class="rcorner" id="headingFive">
+						       <h5> Discussion Forums & FAQs
+						        <i class="fa fa-arrow-down syl_btn float-right" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive"></i>
+						    	</h5>
+						    </div>
+						    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+						      <div class="card-body">
+						        Content 5
+						      </div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			<!-- Skills you learn and Instructor feedback -->
+				<div class="col-md-4">
+					<div class="skills">
+							<div class="row container-fluid">
+								<div class="btn btn-skills">Skills You Learn</div>
+							</div>
+							<div class="row container">
+			                    <button class="btn btn-langs">HTML</button>
+			                    <button class="btn btn-langs">CSS</button>
+			                    <button class="btn btn-langs">Javascript</button>
+			                    <button class="btn btn-langs">UI</button>
+			                    <button class="btn btn-langs">Bootstrap</button>
+			                    <button class="btn btn-langs">Icon</button>
+			                    <button class="btn btn-langs">Graphics</button>
+			                    <button class="btn btn-langs">App</button>
+			                    <button class="btn btn-langs">I-phone</button>
+			                    <button class="btn btn-langs">Android</button>
+			                    <button class="btn btn-langxl">Web Design</button>
+			                </div>
+		            </div>
+		            <div class="row container-fluid">
+		            	<div class="instructor">
+			                <form>
+			                	<div class="form-group">
+			                		<p class = "message">Did you not understand something ? <br>Ask Your Instructor !</p>
+			                	</div>
+			   	                <div class="form-group justify-content-center align-items-center">
+			                        <textarea name="message" id="message" class="form-control messageArea" placeholder="Enter Message"></textarea>
+			                    </div>
+			                    <button type="submit" class="btn btnsend float-right">Send</button>
+			                </form>
+            			</div>
+		            </div>
+				</div>
+			</div>
+			<!-- Slider -->
+				<div class="swiper-container">
+      						<h2>OTHER RELEVANT COURSES</h2>
+		      			<div class="swiper-wrapper">
+							  {% for sim in similar %}
+		                    	<div class="swiper-slide"><a href="#" class="fav" onclick="fav()"><i class="fas fa-heart"></i></a>
+			                      	<div>
+			                          <h5 class="container  py-4">{{ sim.course_name }}</h5>
+			                          <p>{{ sim.course_description }}</p>
+			                      	</div>
+								  </div>
+								{% endfor %}
+		                </div>
+               	</div>
+			<!-- Foooter -->
+			<div class="footer">
+				<div class="row gap_u">
+						<div class="row container-fluid justify-content-center align-items-center ">
+							<div class="text-center social">
+								<i class="fab fa-facebook-f fa-2x"></i>
+								<i class="fab fa-instagram fa-2x gap_l"></i>
+								<i class="fab fa-pinterest-square fa-2x gap_l"></i>
+								<i class="fab fa-twitter-square fa-2x gap_l"></i>
+								<i class="fab fa-linkedin-in fa-2x gap_l"></i>
+							</div>
+						</div>
+						<div class="row container-fluid justify-content-center align-items-center">
+							<div class="cr text-center"><h3>©2020 All Rights Reserverd By Caramel IT Services Pvt. Ltd.</h3></div>
+						</div>
+				</div>
+			</div>
+</div>
+
+
+
+ <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/js/swiper.js"></script>
+    <script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script src="{% static 'staticHome/javascript/index.js' %}"></script>
+<script type="text/javascript">
+	var swiper = new Swiper(".swiper-container", {
+  slidesPerView: 5,
+  spaceBetween: 40,
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+});
+
+</script>
+</body>
+</html>

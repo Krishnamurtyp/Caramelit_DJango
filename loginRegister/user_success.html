@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-expand-sm">
+  <!-- Brand/logo -->
+  <a class="navbar-brand" href="/">
+    <img src="{% static 'images/Caramellogo.png' %}" alt="logo" style="width:240px; height:65px; margin:0px 0px 0px 0px;">
+  </a>
+</nav>
+<div align="center">
+<form action="/user/successLogin">
+ <button  class="btn btn-primary">Student</button>
+    </form>
+    <br><br>
+<form action="/user/successLoginProfessional">
+<button class="btn btn-primary">Professional</button>
+    </form>
+</div>
+</body>
+</html>

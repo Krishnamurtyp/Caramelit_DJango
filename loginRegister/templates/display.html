@@ -1,0 +1,46 @@
+{% load static %}
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    </head>
+    <body>
+        {{program}}
+        {{subprogram}}
+        <ul>
+            {% for p,b in program.items %}
+             <li id={{p}}>
+             <button >{{p}}</button>
+             <ul>
+             {% for sp in b %}
+             <li class={{p}} id={{sp}} style="display: none;">
+             <button >{{sp}}</button></li>
+             <ul>
+                {% for d,e in subprogram.items %}
+                 {% if d is sp %}
+                  {% for i in e%}
+                   <li class={{sp}} style="display: none;">
+                    <img src={{i.img.url}} style="width:100px;height:100px">
+                    {{i.course_name}}
+                   </li>
+                  {% endfor %}
+                 {% endif %}
+                {% endfor %}
+             </ul>
+             
+             {% endfor %}
+             </ul>
+             </li>
+            {% endfor %}
+            </ul>
+            <script>
+                $(document).ready(function(){
+                  $('li').click(function(){
+                      var id=$(this).attr('id')
+                    $('.'+id).show();
+                  });
+                });
+        </script>
+    </body>
+</html>
