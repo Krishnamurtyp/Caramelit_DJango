@@ -64,20 +64,19 @@ urlpatterns = [
     path('admin/admin_register', loginviews.admin_register, name='admin_register'),
     path('admin/admin_forgot-password', loginviews.admin_forgot_password, name='admin_forgot_password'),
     path('admin/admin_successLogin', loginviews.admin_successLogin, name='admin_successLogin'),
+    
     path('admin/admin_manage', loginviews.admin_manage, name='admin_manage'),
     path('admin/admin_addstructure', loginviews.admin_addstructure, name='admin_addstructure'),
     path('admin/admin_addstructure1', loginviews.addprogram, name='admin_addstructure1'),
     path('admin/admin_addstructure2', loginviews.addprogram2, name='admin_addstructure2'),
     path('admin/addprogram', loginviews.addprogram, name='addprogram'),
-    path('admin/addprogram2', loginviews.addprogram2, name='addprogram2'),
-   
-    
+    path('admin/addprogram2', loginviews.addprogram2, name='addprogram2'), 
     path('admin/addprogram3', loginviews.addprogram3, name='addprogram3'),
     path('admin/admin_addCourse', loginviews.admin_addCourse, name='admin_addCourse'),
     path('admin/admin_addCourse1', loginviews.admin_addCourse1, name='admin_addCourse1'),
-    
     path('admin/admin_addCourse2', loginviews.admin_addCourse2, name='admin_addCourse2'),
     path('filter', loginviews.display),
+
     path('admin/logout', loginviews.admin_logout, name='admin_logout'),
     path('admin/user_list', loginviews.user_list, name='user_list'),
     path('admin/instructor_list', loginviews.instructor_list, name='instructor_list'),
@@ -86,8 +85,9 @@ urlpatterns = [
     path('admin/list_course', courseviews.course_list, name="course_list"),
     path('admin/new_course', courseviews.new_course, name="new_course"),
     path('admin/course_resource', courseviews.course_resource, name="course_resource"),
-    path('course/delete/<int:courseID>', courseviews.delete_course, name="delete_course"),
-    path('course/edit/<int:courseID>', courseviews.edit_course, name="edit_course"),
+    path('admin/delete/<int:courseID>', courseviews.delete_course, name="delete_course"),
+    path('admin/edit/<int:courseID>', courseviews.edit_course, name="edit_course"),
+    path('admin/view/<int:courseID', courseviews.view_course, name="view_course"),
     # Industries related pages
     path('industries/automotive', staticviews.automotive, name="automotive"),
     path('industries/communication', staticviews.communication, name="communication"),
@@ -110,7 +110,6 @@ urlpatterns = [
     path('business/operations', staticviews.operations, name="operations"),
     path('business/Application', staticviews.Application, name="Application"),
     # Courses
-    path('courses/uicourses', courseviews.uicourses, name="uicourses"),
     path('courses/backend', courseviews.backend, name="backend"),
     path('courses/fullstack', courseviews.fullstack, name="fullstack"),
     path('courses/functionaltesting', courseviews.functionaltesting, name="functionaltesting"),
@@ -123,8 +122,6 @@ urlpatterns = [
     path('courses/erp', courseviews.erp, name="erp"),
     path('courses/it', courseviews.it, name="it"),
     path('courses/itcertification', courseviews.itcertification, name="itcertification"),
-    
-    
     path('courses/coursepage/coreui', courseviews.coreui, name="coreui"),
     path('courses/coursepage/advancedui', courseviews.advancedui, name="advancedui"),
     path('courses/coursepage/angularjs', courseviews.angularjs, name="angularjs"),

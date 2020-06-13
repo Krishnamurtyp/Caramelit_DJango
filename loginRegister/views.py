@@ -463,42 +463,37 @@ def organisation_list(request):
 
 
 def addprogram(request):
-   
     if request.method == 'POST':
-         program_name=request.POST['program']
-         
-         p=program_details(program=program_name )
-         p.save()
+        program_name=request.POST['program']
+        p=program_details(program=program_name )
+        p.save()
     program_name=program_details.objects.all()     
     return render(request, 'admin_addstructure1.html', {'program_name':program_name })
          
         
     
 def addprogram2(request):
-   
     if request.method == 'POST':
-         subprogram_name=request.POST['subprogram']
-         program_name=request.POST['program_sub']
-         p=subprogram_details(subprogram_name=subprogram_name,program=program_name )
-         p.save()
+        subprogram_name=request.POST['subprogram']
+        program_name=request.POST['program_sub']
+        p=subprogram_details(subprogram_name=subprogram_name,program=program_name )
+        p.save()
     subprogram_name=subprogram_details.objects.all()     
     return render(request, 'admin_addstructure2.html', {'subprogram_name':subprogram_name })
          
 def addprogram3(request):
-   
     if request.method == 'POST':
-         course_name=request.POST['coursename']
-         image=request.POST['img']
-         subprogram=request.POST['subprogram']
-         
-         p=course_names(course_name=course_name,subprogram=subprogram,img=image )
-         p.save()
+        course_name=request.POST['coursename']
+        image=request.POST['img']
+        subprogram=request.POST['subprogram']
+        
+        p=course_names(course_name=course_name,subprogram=subprogram,img=image )
+        p.save()
     subprogram_name=course_names.objects.all()     
         
     return redirect('/filter')
+
 def display(request):
-    
-    
     program={}
     subprogram={}
     for idp,p in program_details.objects.values_list('id','program'):
@@ -509,26 +504,26 @@ def display(request):
             for c in course_names.objects.filter(subprogram=sp):
                 subprogram[sp].append(c)
     data=subprogram_details.objects.filter(program="").values_list('id','subprogram_name')
-    return render(request,'display.html',{'program':program,'subprogram':subprogram})     
-       
-
-
-
-
-
-
+    return render(request,'display.html',{'program':program,'subprogram':subprogram})
 
 def admin_manage(request):
-    return render(request,'admin_manage.html')
+    admin = adminUser.objects.filter(email=request.COOKIES.get('username')).values()[0]
+    return render(request,'admin_manage.html', {'data': admin})
+
 def admin_addstructure(request):
     return render(request,'admin_addstructure.html')
+
 def admin_addstructure1(request):
     return render(request,'admin_addstructure1.html')
+
 def admin_addstructure2(request):
     return render(request,'admin_addstructure2.html')
+
 def admin_addCourse(request):
     return render(request,'admin_addCourse.html')
+
 def admin_addCourse1(request):
     return render(request,'admin_addCourse1.html')
+    
 def admin_addCourse2(request):
     return render(request,'admin_addCourse2.html')

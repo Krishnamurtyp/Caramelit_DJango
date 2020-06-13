@@ -53,6 +53,10 @@ def course_resource(request):
             Course_res.save()
     return render(request, 'courses/course_resource.html', {'resources' : resources })
 
+def view_course(request, courseID):
+    course = Course.objects.filter(course_id=courseID).values()
+    pass
+
 def edit_course(request, courseID):
     course = Course.objects.filter(course_id=courseID).values()
     if request.method == 'POST':
@@ -76,7 +80,7 @@ def delete_course(request, courseID):
     return redirect('/course/list_course')
 
 # Course pages
-def uicourses(request):
+def coreui(request):
     if request.COOKIES.get('username') == None or request.COOKIES.get('username') == 'None':
         return redirect('/user/login')
     uicourse = Course.objects.filter(course_id=2)
@@ -86,8 +90,6 @@ def uicourses(request):
 
 def backend(request):
     return render(request, 'courses/backend.html')
-def coreui(request):
-    return render(request, 'courses/coursespage/coreui.html')
 
 def fullstack(request):
     return render(request, 'courses/fullstack.html')
@@ -121,9 +123,6 @@ def it(request):
 
 def itcertification(request):
     return render(request, 'courses/itcertification.html')
-
-def coreui(request):
-    return render(request, 'courses/coursepage/uicourses.html')
 
 def advancedui(request):
     return render(request, 'courses/coursepage/advancedui.html')
