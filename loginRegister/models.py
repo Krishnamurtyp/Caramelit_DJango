@@ -2,6 +2,29 @@ from django.db import models
 from django.utils import timezone
 
 # Student user
+class professionalUser(models.Model):
+    student_id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100, unique=True)
+    phone = models.BigIntegerField()
+    birth_date = models.DateField()
+    country = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    highest_qualification = models.CharField(max_length=100, default='')
+    university_name = models.CharField(max_length=100, default='')
+    specialisation = models.CharField(max_length=100, default='')
+    skill_set = models.CharField(max_length=100)
+    profileImg = models.CharField(max_length=100, default='photo.jpg')
+    date_of_reg = models.DateTimeField(default=timezone.now)
+    no_of_courses = models.IntegerField(default=0)
+    password = models.CharField(max_length=100)
+    organisation= models.CharField(max_length=100)
+    experience= models.CharField(max_length=100)
+    specialisation= models.CharField(max_length=100)
+    pastOrganisation=models.CharField(max_length=100)
+    skill_set= models.CharField(max_length=100)
+
 class studentUser(models.Model):
     student_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)

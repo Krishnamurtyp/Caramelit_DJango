@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import studentUser, adminUser, instructor, college, organisation,program_details,subprogram_details,course_names
+from .models import studentUser, professionalUser, adminUser, instructor, college, organisation,program_details,subprogram_details,course_names
 import hashlib
 from django.http import HttpResponse
 
@@ -37,7 +37,9 @@ def user_login(request):
 def user_register(request): 
     if request.method == 'POST':
         global salt
+        print(request.POST)
         try:
+            typeUser = request.POST.get('typeUser')
             fname = request.POST.get('fname')
             lname = request.POST.get('lname')
             email = request.POST.get('email')
@@ -48,22 +50,40 @@ def user_register(request):
             state = request.POST.get('state')
             college = request.POST.get('college')
             skills = request.POST.get('skill')
-            student = studentUser.objects.filter(email=email)
-            if len(student) > 0:
-                return render(request, 'register.html', {'state': 3})
-            student = studentUser(
-                first_name=fname,
-                last_name=lname,
-                email=email,
-                phone=phone,
-                birth_date = birthDate,
-                country=country,
-                state=state,
-                college=college,
-                skill_set=skills,
-                password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
-            )
-            student.save()
+            if typeUser == 'professional':
+                student = professionalUser.objects.filter(email=email)
+                if len(student) > 0:
+                    return render(request, 'register.html', {'state': 3})
+                student = professionalUser(
+                    first_name=fname,
+                    last_name=lname,
+                    email=email,
+                    phone=phone,
+                    birth_date = birthDate,
+                    country=country,
+                    state=state,
+                    college=college,
+                    skill_set=skills,
+                    password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
+                )
+                student.save()
+            else:
+                student = studentUser.objects.filter(email=email)
+                if len(student) > 0:
+                    return render(request, 'register.html', {'state': 3})
+                student = studentUser(
+                    first_name=fname,
+                    last_name=lname,
+                    email=email,
+                    phone=phone,
+                    birth_date = birthDate,
+                    country=country,
+                    state=state,
+                    college=college,
+                    skill_set=skills,
+                    password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
+                )
+                student.save()
             return render(request, 'register.html', {'state': 2})
         except Exception as e:
             return render(request, 'register.html', {'state': 4})
