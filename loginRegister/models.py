@@ -2,8 +2,9 @@ from django.db import models
 from django.utils import timezone
 
 # Student user
-class professionalUser(models.Model):
+class User(models.Model):
     student_id = models.AutoField(primary_key=True)
+    user_type = models.CharField(max_length=12)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
@@ -24,27 +25,8 @@ class professionalUser(models.Model):
     specialisation= models.CharField(max_length=100)
     pastOrganisation=models.CharField(max_length=100)
     skill_set= models.CharField(max_length=100)
-
-class studentUser(models.Model):
-    student_id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100, unique=True)
-    phone = models.BigIntegerField()
-    birth_date = models.DateField()
-    country = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    highest_qualification = models.CharField(max_length=100, default='')
-    university_name = models.CharField(max_length=100, default='')
-    roll_no = models.CharField(max_length=100, default='')
-    specialisation = models.CharField(max_length=100, default='')
     college_state = models.CharField(max_length=100, default='')
     college = models.CharField(max_length=100)
-    skill_set = models.CharField(max_length=100)
-    profileImg = models.CharField(max_length=100, default='photo.jpg')
-    date_of_reg = models.DateTimeField(default=timezone.now)
-    no_of_courses = models.IntegerField(default=0)
-    password = models.CharField(max_length=100)
 
 class instructor(models.Model):
     instructor_id = models.AutoField(primary_key=True)
@@ -66,29 +48,23 @@ class instructor(models.Model):
     date_of_reg = models.DateTimeField(default=timezone.now)
     password = models.CharField(max_length=100)
 
-class college(models.Model):
-    college_id = models.AutoField(primary_key=True)
+class entity(models.Model):
+    entity_id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    role = models.CharField(max_length=12)
+    birth_date = models.DateField()
     college_name = models.CharField(max_length=100)
     university_name = models.CharField(max_length=100)
-    university_type = models.CharField(max_length=100, default='')
+    university_skill = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
     phone = models.BigIntegerField()
     country = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     skill_set = models.CharField(max_length=100)
     description = models.TextField()
-    profileImg = models.CharField(max_length=100, default='photo.jpg')
-    date_of_reg = models.DateTimeField(default=timezone.now)
-    password = models.CharField(max_length=100)
-
-class organisation(models.Model):
-    organisation_id = models.AutoField(primary_key=True)
     organisation_name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100, unique=True)
-    phone = models.BigIntegerField()
-    state = models.CharField(max_length=100, default='')
-    gstin_no = models.CharField(max_length=100, default='')
-    description = models.TextField()
+    organisation_email = models.EmailField(max_length=100, unique=True)
     profileImg = models.CharField(max_length=100, default='photo.jpg')
     date_of_reg = models.DateTimeField(default=timezone.now)
     password = models.CharField(max_length=100)
@@ -106,9 +82,6 @@ class adminUser(models.Model):
 class program_details(models.Model):
     
     program=models.CharField(max_length=200)
-    
-
-
 
 class subprogram_details(models.Model):
     

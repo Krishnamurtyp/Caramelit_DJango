@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import studentUser, professionalUser, adminUser, instructor, college, organisation,program_details,subprogram_details,course_names
+from .models import User, adminUser, instructor, entity, program_details, subprogram_details, course_names
 import hashlib
 from django.http import HttpResponse
 
@@ -22,7 +22,7 @@ def user_login(request):
         password = request.POST.get('password')
         key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
         try:
-            student = studentUser.objects.get(email=email)
+            student = User.objects.get(email=email)
             if student.password == str(key):
                 response = redirect('/user/successLogin')
                 response.set_cookie('username', email)
@@ -50,40 +50,23 @@ def user_register(request):
             state = request.POST.get('state')
             college = request.POST.get('college')
             skills = request.POST.get('skill')
-            if typeUser == 'professional':
-                student = professionalUser.objects.filter(email=email)
-                if len(student) > 0:
-                    return render(request, 'register.html', {'state': 3})
-                student = professionalUser(
-                    first_name=fname,
-                    last_name=lname,
-                    email=email,
-                    phone=phone,
-                    birth_date = birthDate,
-                    country=country,
-                    state=state,
-                    college=college,
-                    skill_set=skills,
-                    password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
-                )
-                student.save()
-            else:
-                student = studentUser.objects.filter(email=email)
-                if len(student) > 0:
-                    return render(request, 'register.html', {'state': 3})
-                student = studentUser(
-                    first_name=fname,
-                    last_name=lname,
-                    email=email,
-                    phone=phone,
-                    birth_date = birthDate,
-                    country=country,
-                    state=state,
-                    college=college,
-                    skill_set=skills,
-                    password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
-                )
-                student.save()
+            student = User.objects.filter(email=email)
+            if len(student) > 0:
+                return render(request, 'register.html', {'state': 3})
+            student = User(
+                first_name=fname,
+                last_name=lname,
+                user_type=typeUser,
+                email=email,
+                phone=phone,
+                birth_date = birthDate,
+                country=country,
+                state=state,
+                college=college,
+                skill_set=skills,
+                password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
+            )
+            student.save()
             return render(request, 'register.html', {'state': 2})
         except Exception as e:
             return render(request, 'register.html', {'state': 4})
@@ -101,7 +84,7 @@ def user_successLogin(request):
         response.set_cookie('type', None)
         return response
     if request.method == 'POST':
-        student = studentUser.objects.filter(email=username).values()
+        student = User.objects.filter(email=username).values()
         student.update(
             first_name=request.POST.get('fname'),
             last_name=request.POST.get('lname'),
@@ -117,7 +100,7 @@ def user_successLogin(request):
             skill_set=request.POST.get('skills'),
         )
         return redirect('/user/successLogin')
-    student = studentUser.objects.filter(email=username).values()
+    student = User.objects.filter(email=username).values()
     data = student[0]
     return render(request, 'successLogin.html', {'data': data})
 
@@ -228,11 +211,11 @@ def instructor_logout(request):
     response.set_cookie('type', None)
     return response
 
-# College related pages
-def college_login(request):
+# Entity related pages
+def entity_login(request):
     try:
-        if len(request.COOKIES.get('username')) > 0 and request.COOKIES.get('type') == 'college':
-            return redirect('/college/college_successLogin')
+        if len(request.COOKIES.get('username')) > 0 and request.COOKIES.get('type') == 'entity':
+            return redirect('/entity/entity_successLogin')
     except Exception as e:
         pass
     if request.method == 'POST':
@@ -241,65 +224,90 @@ def college_login(request):
         password = request.POST.get('password')
         key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
         try:
-            college1 = college.objects.get(email=email)
-            if college1.password == str(key):
-                response = redirect('/college/college_successLogin')
+            entity1 = entity.objects.get(email=email)
+            if entity1.password == str(key):
+                response = redirect('/entity/entity_successLogin')
                 response.set_cookie('username', email)
-                response.set_cookie('type', 'college')
+                response.set_cookie('type', 'entity')
                 return response
             else:
-                return render(request, 'college_login.html', {'state': 2})
+                return render(request, 'entity_login.html', {'state': 2})
         except Exception as e:
-            return render(request, 'college_login.html', {'state': 3})
-    return render(request, 'college_login.html')
+            return render(request, 'entity_login.html', {'state': 3})
+    return render(request, 'entity_login.html')
 
-def college_register(request):
+def entity_register(request):
     if request.method == 'POST':
         global salt
+        print(request.POST)
         try:
-            collegename = request.POST.get('collegename')
-            universityname = request.POST.get('universityname')
+            first_name=request.POST.get('fname')
+            last_name=request.POST.get('lname')
             email = request.POST.get('email')
+            birthDate = request.POST.get('birthDate')
             phone = int(request.POST.get('phone'))
             password = request.POST.get('password')
             country = request.POST.get('country')
             state = request.POST.get('state')
-            skill = request.POST.get('skill')
-            description = request.POST.get('description')
-            college1 = college.objects.filter(email=email)
-            if len(college1) > 0:
-                return render(request, 'college_register.html', {'state': 3})
-            college1 = college(
-                college_name=collegename,
-                university_name=universityname,
-                email=email,
-                phone=phone,
-                country=country,
-                state=state,
-                skill_set=skill,
-                description=description,
-                password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
-            )
-            college1.save()
-            return render(request, 'college_register.html', {'state': 2})
+            skill = request.POST.get('skill_set')
+            role = request.POST.get('inlineRadioOptions')
+            entity1 = entity.objects.filter(email=email)
+            if len(entity1) > 0:
+                return render(request, 'entity_register.html', {'state': 3})
+            if role == 'College':
+                entity1 = entity(
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    role=role,
+                    birth_date=birthDate,
+                    phone=phone,
+                    country=country,
+                    state=state,
+                    university_name=request.POST.get('university_name'),
+                    skill_set=skill,
+                    college_name=request.POST.get('college'),
+                    university_skill=request.POST.get('college_skill'),
+                    description=request.POST.get('college_description'),
+                    password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
+                )
+            elif role == 'Organization':
+                entity1 = entity(
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    role=role,
+                    birth_date=birthDate,
+                    phone=phone,
+                    country=country,
+                    state=state,
+                    organisation_name=request.POST.get('organization_name'),
+                    skill_set=skill,
+                    college_name=request.POST.get('college'),
+                    organisation_email=request.POST.get('organization_email'),
+                    description=request.POST.get('organization_description'),
+                    password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
+                )
+            entity1.save()
+            return render(request, 'entity_register.html', {'state': 2})
         except Exception as e:
-            return render(request, 'college_register.html', {'state': 4})
-    return render(request, 'college_register.html')
+            return render(request, 'entity_register.html', {'state': 4})
+    return render(request, 'entity_register.html')
 
-def college_forgot_password(request):
-    return render(request, 'college_forgot-password.html')
+def entity_forgot_password(request):
+    return render(request, 'entity_forgot-password.html')
 
-def college_successLogin(request):
+def entity_successLogin(request):
     username = request.COOKIES.get('username')
     usertype = request.COOKIES.get('type')
-    if len(username) == 0 or usertype != 'college':
-        response = redirect('/college/college_login')
+    if len(username) == 0 or usertype != 'entity':
+        response = redirect('/entity/entity_login')
         response.set_cookie('username', None)
         response.set_cookie('type', None)
         return response
     if request.method == 'POST':
-        college1 = college.objects.filter(email=username).values()
-        college1.update(
+        entity1 = entity.objects.filter(email=username).values()
+        entity1.update(
             college_name=request.POST.get('collegeName'),
             university_name=request.POST.get('universityName'),
             university_type=request.POST.get('universityType'),
@@ -310,95 +318,13 @@ def college_successLogin(request):
             skill_set=request.POST.get('skills'),
             description=request.POST.get('description'),
         )
-        return redirect('/college/college_successLogin')
-    college1 = college.objects.filter(email=username).values()
-    data = college1[0]
-    return render(request, 'college_successLogin.html', {'data' : data})
+        return redirect('/entity/entity_successLogin')
+    entity1 = entity.objects.filter(email=username).values()
+    data = entity1[0]
+    return render(request, 'entity_successLogin.html', {'data' : data})
 
-def college_logout(request):
-    response = redirect('/college/college_login')
-    response.set_cookie('username', None)
-    response.set_cookie('type', None)
-    return response
-
-# Organisation related pages
-def organisation_login(request):
-    try:
-        if len(request.COOKIES.get('username')) > 0 and request.COOKIES.get('type') == 'organisation':
-            return redirect('/organisation/organisation_successLogin')
-    except Exception as e:
-        pass
-    if request.method == 'POST':
-        global salt
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
-        try:
-            organisation1 = organisation.objects.get(email=email)
-            if organisation1.password == str(key):
-                response = redirect('/organisation/organisation_successLogin')
-                response.set_cookie('username', email)
-                response.set_cookie('type', 'organisation')
-                return response
-            else:
-                return render(request, 'organisation_login.html', {'state': 2})
-        except Exception as e:
-            return render(request, 'organisation_login.html', {'state': 3})
-    return render(request, 'organisation_login.html')
-
-def organisation_register(request):
-    if request.method == 'POST':
-        global salt
-        try:
-            name = request.POST.get('name')
-            email = request.POST.get('email')
-            phone = int(request.POST.get('phone'))
-            password = request.POST.get('password')
-            description = request.POST.get('description')
-            organisation1 = organisation.objects.filter(email=email)
-            if len(organisation1) > 0:
-                return render(request, 'organisation_register.html', {'state': 3})
-            organisation1 = organisation(
-                organisation_name=name,
-                email=email,
-                phone=phone,
-                description=description,
-                password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
-            )
-            organisation1.save()
-            return render(request, 'organisation_register.html', {'state': 2})
-        except Exception as e:
-            return render(request, 'organisation_register.html', {'state': 4})
-    return render(request, 'organisation_register.html')
-
-def organisation_forgot_password(request):
-    return render(request, 'organisation_forgotPassword.html')
-
-def organisation_successLogin(request):
-    username = request.COOKIES.get('username')
-    usertype = request.COOKIES.get('type')
-    if len(username) == 0 or usertype != 'organisation':
-        response = redirect('/organisation/organisation_login')
-        response.set_cookie('username', None)
-        response.set_cookie('type', None)
-        return response
-    if request.method == 'POST':
-        organisation1 = organisation.objects.filter(email=username).values()
-        organisation1.update(
-            organisation_name=request.POST.get('organisation_name'),
-            email=request.POST.get('email'),
-            phone=request.POST.get('phone'),
-            state=request.POST.get('state'),
-            gstin_no=request.POST.get('gstin_no'),
-            description=request.POST.get('description'),
-        )
-        return redirect('/organisation/organisation_successLogin')
-    organisation1 = organisation.objects.filter(email=username).values()
-    data = organisation1[0]
-    return render(request, 'organisation_successLogin.html', {'data' : data})
-
-def organisation_logout(request):
-    response = redirect('/organisation/organisation_login')
+def entity_logout(request):
+    response = redirect('/entity/entity_login')
     response.set_cookie('username', None)
     response.set_cookie('type', None)
     return response
@@ -465,20 +391,16 @@ def admin_logout(request):
     return response
 
 def user_list(request):
-    users_data = studentUser.objects.all()
+    users_data = User.objects.all()
     return render(request, 'user_list.html', {'users': users_data})
 
 def instructor_list(request):
     instructor_data = instructor.objects.all()
     return render(request, 'instructor_list.html', {'instructors': instructor_data})
 
-def college_list(request):
-    college_data = college.objects.all()
-    return render(request, 'college_list.html', {'colleges': college_data})
-
-def organisation_list(request):
-    organisation_data = organisation.objects.all()
-    return render(request, 'organisation_list.html', {'organisations': organisation_data})
+def entity_list(request):
+    entity_data = entity.objects.all()
+    return render(request, 'entity_list.html', {'entities': entity_data})
 
 
 
