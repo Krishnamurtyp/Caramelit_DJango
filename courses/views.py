@@ -8,42 +8,42 @@ def course_list(request):
 
 def new_course(request):
     if request.method == 'POST':
-        course_name = request.POST.get('coursename')
-        category_name = request.POST.get('categoryname')
-        subcategory_name = request.POST.get('subcategoryname')
-        course_difficulty = request.POST.get('coursedifficulty')
-        course_description = request.POST.get('coursedescription')
-        resource = request.POST.get('numResource')
-        response = redirect('/course/course_resource')
-        course_cat = Course_category(category_name=category_name)
-        course_cat.save()
-        course_subcat = Course_subcategory(subcategory_name=subcategory_name,
-                                            category=course_cat)
-        course_subcat.save()
+        course_name = request.POST.get('course_title')
+        category_name = request.POST.get('course_category')
+        subcategory_name = request.POST.get('course_subcategory')
+        course_description = request.POST.get('course_description')
+        resource = request.POST.get('num_resources')
+        course_cat = Course_category.objects.filter(category_name=category_name)
+        if len(course_cat) == 0:
+            course_cat = Course_category(category_name=category_name)
+            course_cat.save()
+        course_subcat = Course_subcategory.objects.filter(subcategory_name=subcategory_name)
+        if len(course_subcat) == 0:
+            course_subcat = Course_subcategory(subcategory_name=subcategory_name, category=course_cat)
+            course_subcat.save()
         course = Course(
             subcategory=course_subcat,
             subcategory_name=subcategory_name,
             category_name=category_name,
             course_name=course_name,
-            course_difficulty=course_difficulty,
             course_description=course_description,
         )
         course.save()
-        resources = []
-        for i in range(int(resource)):
-            resources.append('Resource '+str(i+1))
-        response.set_cookie('resources', resources)
+        response = redirect('/admin/new_course_resources')
+        response.set_cookie('resources', resource)
         response.set_cookie('course_id', course.course_id)
         return response
     return render(request, 'courses/new_course.html')
 
 def course_resource(request):
-    resources = request.COOKIES.get('resources')
-    resources = resources[1:-1].replace("'", "").split(',')
+    resource = request.COOKIES.get('resources')
+    courseID = request.COOKIES.get('course_id')
+    resources = []
+    for res in range(int(resource)):
+        resources.append(str(res+1))
     if request.method == 'POST':
-        res = len(resources)
-        course = Course.objects.filter(course_id=request.COOKIES.get('course_id'))[0]
-        for resource in resources:
+        course = Course.objects.filter(course_id=courseID)[0]
+        for resourse in resources :
             Course_res = Course_resource(
                 course=course,
                 resourse_name=request.POST.get(resource+'_name'),
@@ -51,7 +51,19 @@ def course_resource(request):
                 resourse_length=request.POST.get(resource+'_length'),
             )
             Course_res.save()
-    return render(request, 'courses/course_resource.html', {'resources' : resources })
+        response = redirect('/admin/save_course')
+        response.set_cookie('course_id', courseID)
+        return response
+    return render(request, 'courses/new_course_resources.html', {'resources' : resources })
+
+def save_course(request):
+    courseID = request.COOKIES.get('course_id')
+    if request.method == 'POST':
+        choice = request.POST.get('choice')
+        if choice == 'Reset':
+            Course.objects.filter(course_id=courseID).delete()
+        return redirect('/admin/admin_manage')
+    return render(request, 'courses/new_course_save.html')
 
 def view_course(request, courseID):
     course = Course.objects.filter(course_id=courseID).values()

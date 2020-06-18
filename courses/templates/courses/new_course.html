@@ -1,152 +1,204 @@
-{% load static %}
+
+{% load static%}
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:th="http://www.thymeleaf.org">
+<html>
+
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style> 
+    <title>Admin Add Course</title>
 
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="{%static 'loginRegister/css/style2.css' %}">
 
-.row a .card:hover{
-	
-	color:black;
-}
-.row a:hover{
-	text-decoration:none;
-}
-nav ul a{
-	color:lavender;
-}
-nav ul a:hover{
-	color:black;
-}
-
-div a{
-color:lavender;
-font-weight:bold;
-font-size:20px;
-}
-div a:hover{
-color:#111;
-}
-
-.card{
-	background:#17A2B7;
-	border:1px solid #111;
-	padding:30px;
-	height:120px;
-	margin-top:20px;
-}
-
-  </style>
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 </head>
-<body class="bg-light">
-	
-<nav class="navbar navbar-expand-sm bg-info navbar-info">
-  <!-- Brand/logo -->
-  <a class="navbar-brand" href="/admin/admin_successLogin">
-    <img src="{% static 'images/Caramellogo.png' %}" alt="logo" style="width:240px; height:65px; margin:0px 0px 0px 0px;">
-  </a>
- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon">
-    	  <i class="fa fa-bars" style="color:#fff; font-size:28px;"></i>
-    </span>
-  </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">  
-  <!-- Links -->
-  <ul class="navbar-nav ml-auto">
-  
-  
-   
-    <li class="nav-item dropdown">
-      <a class="nav-link dropbtn" href="/admin/logout" style="font-size:25px;margin-left:40px;"><b>Logout</b></a>
-    </li>
 
-  </ul>
-  </div>
-</nav><br/><br/>
-<center><h2><b>Add Details of the new course</b></h2></center><br/><br/><br/>
-<form action="#" method="post">
+<body>
+    <section>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+                
+                <img src="{%static  'images/logo.jpg' %} " alt="" height="50">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">IT Services<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Contact Us<span class="sr-only">(current)</span></a>
+                  </li>
+             
+              </ul>
+            </div>
+          </nav>
+     </section>
+    <div class="wrapper ">
+        
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+            <center>    <img src="{% static 'images/5.png' %}" alt="" height="90"><br>
+                <label>{{ name }}</label><br>
+                <a  href="/admin/logout"
+                ><b>Logout</b></a>
+            </center>
+            </div>
+<hr style="background:white;">
+            <ul class="list-unstyled components">
+               
+          
+                <li>
+                    <a href="#">Pages</a>
+                </li>
+              
+                <li>
+                    <a href="#">Reports</a>
+                </li>
+                <li>
+                    <a href="#">Question Bank</a>
+                </li>
+                <li>
+                    <a href="admin_manage">Manage Services</a>
+                </li>
+                <li>
+                    <a href="#">Template</a>
+                </li>
+                <li>
+                    <a href="#">Tools</a>
+                </li>
+            </ul>
 
-       {% csrf_token %}
+        
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
 
 
-<div class="row">
-    <div class="col-md-1"></div>
-        <div class="col-md-10">
-            <div class="row form-group">
-                <div class="col-md-4">
-                    <label>Course Name <i style="color:red;">*</i></label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" name="coursename" required/>
-                </div>
+    <div class="container">      
+        
+        <div class="row">
+         
+            <div class="col-lg-4">
+                <div class="card" style="width: 18rem;
+                
+               background:#4389A2;
+                color:white;">
+                    <div class="card-body">
+                      <h5 class="card-title">Step 1</h5>
+                      <h6 class="card-subtitle mb-2 " style="color:white;">
+                        Fill the course details </h6>
+                     
+                    </div>
+                  </div>
             </div>
-            <div class="row form-group">
-                <div class="col-md-4">
-                    <label>Category Name <i style="color:red;">*</i></label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" name="categoryname" required/>
-                </div>
+            <div class="col-lg-4">
+                <div class="card" style="width: 18rem;
+                
+               background:#085078;
+                color:white;">
+                    <div class="card-body">
+                      <h5 class="card-title">Step 2</h5>
+                      <h6 class="card-subtitle mb-2 " style="color:white;">Upload Course Files </h6>
+                     
+                    </div>
+                  </div>
             </div>
-            <div class="row form-group">
-                <div class="col-md-4">
-                    <label>Sub-Category Name <i style="color:red;">*</i></label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" name="subcategoryname" required/>
-                </div>
+            <div class="col-lg-4">
+                <div class="card" style="width: 18rem;
+                
+               background:#085078;
+                color:white;">
+                    <div class="card-body">
+                      <h5 class="card-title">Step 3</h5>
+                      <h6 class="card-subtitle mb-2 " style="color:white;">Confirmation </h6>
+                     
+                    </div>
+                  </div>
             </div>
-            <div class="row form-group">
-                <div class="col-md-4">
-                    <label>Course Difficulty <i style="color:red;">*</i></label>
+       
+            
+        </div><br><br>
+        <center>    <form method="POST">
+          {% csrf_token %}
+                <div class="form-group">
+                
+                  <input type="text" name="course_title" class="form-control" id="formGroupExampleInput" placeholder="Enter Course Title"
+                   style="width: 70%;">
                 </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" name="coursedifficulty" required/>
+                <div class="form-group">
+                 
+                  <input type="text" name="course_description" class="form-control" id="formGroupExampleInput2"
+                   placeholder="Enter Course Description" style="width: 70%;">
                 </div>
+                <div class="form-group">
+                 
+                    <input type="text" name="num_resources" class="form-control" id="formGroupExampleInput2"
+                     placeholder="No of Modules" style="width: 70%;">
+                  </div>
+                  <div class="form-group">
+                  <select class="custom-select mr-sm-2" name="course_category" id="inlineFormCustomSelect" style="width: 70%;">
+                    <option selected>Select Category</option>
+                    <option value="Software Development">Software Development</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                    <select class="custom-select mr-sm-2" name="course_subcategory" id="inlineFormCustomSelect" style="width: 70%;">
+                      <option selected>Select Sub Category</option>
+                      <option value="Front-End">Front-End</option>
+                      <option value="Back-End">Back-End</option>
+                      <option value="Full Stack">Full Stack</option>
+                      <option value="Functional Testing">Functional Testing</option>
+                      <option value="Data Science">Data Science</option>
+                      <option value="Mobility">Mobility</option>
+                      <option value="DevOps">DevOps</option>
+                      <option value="Cloud Certification">Cloud Certification</option>
+                      <option value="Cyber Security">Cyber Security</option>
+                      <option value="Information Technology">Information Technology</option>
+                      <option value="Digital Marketing">Digital Marketing</option>
+                      <option value="ERP">ERP</option>
+                      <option value="IT Certifications">IT Certifications</option>
+                    </select>        
+                  </div>
+                         
+                     
+                  
+                    <div class="form-group">    
+                    <button type="submit" class="btn btn-primary" style="margin-left: 660px;">Next</button>
+          
+          </div> 
+                     
+               </form>
+                 
+          
+                 
+            </center>
+
             </div>
-            <br/>
-            <div class="row">
-                <div class="col-md-8">
-                <h5><b>Course Resources</b></h5>
-                </div>
-                <div class="col-md-4"></div>
-            </div>
-            <div class="row form-group mt-2">
-                <div class="col-md-4">
-                    <label>Number of Resources/Videos <i style="color:red;">*</i></label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" th:field="*{qualification}" name="numResource" />
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-4">
-                    <label>Course Description <i style="color:red;">*</i></label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" name="coursedescription" required/>
-                </div>
-            </div>
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-success px-3">Save</button><br/>
         </div>
     </div>
-        </div>
-    <div class="col-md-1"></div>
-    
-    
-</div>
 
-</form>	
-    </body>
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+  
+</body>
+
 </html>

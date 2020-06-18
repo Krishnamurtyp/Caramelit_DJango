@@ -379,7 +379,7 @@ def admin_register(request):
                 password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
             )
             admin1.save()
-            return render(request, 'organisation_register.html', {'state': 2})
+            return render(request, 'admin_register.html', {'state': 2})
         except Exception as e:
             return render(request, 'admin_register.html', {'state': 4})
     return render(request, 'admin_register.html')
@@ -467,12 +467,3 @@ def admin_addstructure1(request):
 
 def admin_addstructure2(request):
     return render(request,'admin_addstructure2.html')
-
-def admin_addCourse(request):
-    return render(request,'admin_addCourse.html')
-
-def admin_addCourse1(request):
-    return render(request,'admin_addCourse1.html')
-    
-def admin_addCourse2(request):
-    return render(request,'admin_addCourse2.html')

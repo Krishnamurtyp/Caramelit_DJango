@@ -1,3 +1,5 @@
+
+{% load static%}
 <!DOCTYPE html>
 <html>
 
@@ -6,12 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Collapsible sidebar using Bootstrap 4</title>
+    <title>Admin Add Course</title>
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="{%static 'css/style2.css' %}">
+    <link rel="stylesheet" href="{%static 'loginRegister/css/style2.css' %}">
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -22,8 +23,7 @@
  <section>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">
-            
-            <img src="logo.jpg" alt="" height="50">
+            <img src="{%static  'images/logo.jpg' %} " alt="" height="50">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -48,7 +48,7 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-            <center>    <img src="5.png" alt="" height="90"><br>
+            <center>   <img src="{% static 'images/5.png' %}" alt="" height="90">   <br>
                 <label>{{ name }}</label><br>
                 <a  href="/admin/logout"
                  ><b>Logout</b></a>
@@ -70,7 +70,8 @@
                     <a href="#">Question Bank</a>
                 </li>
                 <li>
-                    <a href="/admin/admin_manage">Manage Services</a>
+                    <a href="admin_manage">Manage Services</a>
+                
                 </li>
                 <li>
                     <a href="#">Template</a>
@@ -89,64 +90,60 @@
 
     <div class="container">      
         
-        <div class="row text-center">
+        <div class="row">
          
-            <div class="col-lg-6 ">
-    <a href="/admin/admin_addstructure">            <div class="card" style="width: 30rem;
+            <div class="col-lg-4">
+                <div class="card" style="width: 18rem;
                 
                background:#085078;
                 color:white;">
                     <div class="card-body">
-                      <h5 class="card-title">Manage Group Programs</h5>
-                  
-                     
-                    </div>
-                  </div></a>
-            </div>
-            <a href="/admin/admin_addstructure1">    <div class="col-lg-6">
-                <div class="card" style="width: 30rem;
-                
-               background:#085078;
-                color:white;">
-                    <div class="card-body">
-                      <h5 class="card-title">Manage sub-group(Sub-programs)</h5>
-                   
+                      <h5 class="card-title">Step 1</h5>
+                      <h6 class="card-subtitle mb-2 " style="color:white;">Fill the course details </h6>
                      
                     </div>
                   </div>
-            </div>    </a>
-          
+            </div>
+            <div class="col-lg-4">
+                <div class="card" style="width: 18rem;
+                background:#085078;
+              
+                color:white;">
+                    <div class="card-body">
+                      <h5 class="card-title">Step 2</h5>
+                      <h6 class="card-subtitle mb-2 " style="color:white;">Upload Course Files </h6>
+                     
+                    </div>
+                  </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card" style="width: 18rem;
+               
+               background:#4389A2;
+                color:white;">
+                    <div class="card-body">
+                      <h5 class="card-title">Step 3</h5>
+                      <h6 class="card-subtitle mb-2 " style="color:white;">Confirmation </h6>
+                     
+                    </div>
+                  </div>
+            </div>
        
             
         </div><br><br>
         <center>  
-            <form>
-                <div class="form-group">
+              <form method="POST">
                 
-                  <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter  Title"
-                   style="width: 70%;">
-                </div>
-                <div class="form-group">
-                 
-                  <input type="text" class="form-control" id="formGroupExampleInput2"
-                   placeholder="Enter  Description" style="width: 70%;">
-                </div>
-              
+                {% csrf_token %}
                 
-                     
-                  
-                    <div class="form-group">
-                  
-                         <button type="button" class="btn btn-success" >Save Category</button>
-                         <button type="button" class="btn btn-primary" >View Category</button>
-                      
-                      
-                      
-                      
-                        </div> 
-                     
-               </form>
-                 
+                        <button name="choice" type="submit" value="Reset" class="btn btn-warning"  
+                        style="width: 150px;" >
+               Reset</button> <br><br>
+               
+                <button name="choice" type="submit" class="btn btn-success" value="Submit" style="width: 150px;" >
+       Submit</button> 
+               
+                 </form>
           
                  
             </center>

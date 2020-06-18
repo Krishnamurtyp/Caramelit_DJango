@@ -7,13 +7,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <title>Admin Add Course</title>
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" href="{%static 'loginRegister/css/style2.css' %}">
-
+    <style>
+        body {
+            overflow: scroll;
+        }
+    </style>
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
@@ -45,7 +48,7 @@
     <div class="wrapper ">
         
         <!-- Sidebar  -->
-        <nav id="sidebar">
+        <nav id="sidebar" style="position: fixed;">
             <div class="sidebar-header">
             <center>   <img src="{% static 'images/5.png' %}" alt="" height="90"><br>
                 <label>{{ name }}</label><br>
@@ -128,33 +131,48 @@
        
             
         </div><br><br>
-        <center>    <form>
-                
-                              <div class="form-group" style="width: 50%;">
-                    <span >Upload Course Image</span><br>
-                    <input type="file" class="form-control" id="formGroupExampleInput2"
-                     placeholder="Upload Course Image"  >
-                     
+        <center>    <form method="POST">
+            {% csrf_token %}
+                     {% for resource in resources %}
+                     <div class="row">
+                        <div class="col-md-8">
+                        <h5><b>Course Resource</b></h5>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <div class="row form-group mt-2">
+                        <div class="col-md-4">
+                            <label>Name {{ resource }}<i style="color:red;">*</i></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" th:field="*{qualification}" name="{{ resource }}_name" />
+                        </div><br/><br/>
+                        <div class="col-md-4">
+                            <label>Link <i style="color:red;">*</i></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" th:field="*{qualification}" name="{{ resource }}_link" />
+                        </div><br/><br/>
+                        <div class="col-md-4">
+                            <label>Length <i style="color:red;">*</i></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" th:field="*{qualification}" name="{{ resource }}_length" />
+                        </div>
+                    </div>
+                    <br/>
+                     {% endfor %}
                     </div> <br><br>
-                    <div class="form-group "  style="width: 50%;">
-                        <span >Upload Table of Content</span><br>
-                        <input type="file" class="form-control" id="formGroupExampleInput2"
-                         placeholder="Upload Course Image"  >
 <br><br>
-              <a href="/admin/admin_addCourse">          <button type="button" class="btn btn-primary" style="float: left;">
-                  Previous</button></a> 
                          <span style="float: left;">
                              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
                               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                 &nbsp; &nbsp; &nbsp;  &nbsp;
-                         </span>
-                         <a href="admin_addCourse2">    
-                                         <button type="button" class="btn btn-primary" 
-                                         style="float: left;">Next >></button></a>
-                       
-                        </div> 
+                         </span>   
+                                         <button type="submit" class="btn btn-primary" 
+                                         style="float: left;">Next >></button>
                      
                
                  
