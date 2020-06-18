@@ -79,6 +79,15 @@ color:white;
       <div class="text-center" style="margin-top: 20px;">
         <h3 style="font-weight:600;">Entity Registration</h3><br>
         <form action="#" method="POST">
+          <center>
+            {% if state == 3 %}
+              <p style="color: red; font-size: small;">* User already exists!!</p>
+            {% elif state == 2 %}
+              <p style="color: lightgreen; font-size: small;">Your account was created successfully</p>
+            {% elif state == 4 %}
+              <p style="color: red; font-size: small;">* There was and error! Please check all details and try again</p>
+            {% endif %}
+          </center>
           {% csrf_token %}
           <div class="row" style="margin-left: 50px;">
           <div style="width: 100%; max-width: 887.16px;">

@@ -12,7 +12,7 @@ def index(request):
 # User related pages
 def user_login(request):
     try:
-        if len(request.COOKIES.get('username')) > 0 and request.COOKIES.get('type') == 'student':
+        if len(request.COOKIES.get('username')) > 0 and (request.COOKIES.get('type') == 'student' or request.COOKIES.get('type') == 'professional'):
             return redirect('/ugser/successLoin')
     except Exception as e:
         pass
@@ -26,7 +26,7 @@ def user_login(request):
             if student.password == str(key):
                 response = redirect('/user/successLogin')
                 response.set_cookie('username', email)
-                response.set_cookie('type', 'student')
+                response.set_cookie('type', student.user_type)
                 return response
             else:
                 return render(request, 'login.html', {'state': 2})
@@ -37,7 +37,6 @@ def user_login(request):
 def user_register(request): 
     if request.method == 'POST':
         global salt
-        print(request.POST)
         try:
             typeUser = request.POST.get('typeUser')
             fname = request.POST.get('fname')
@@ -78,7 +77,7 @@ def user_forgot_password(request):
 def user_successLogin(request):
     username = request.COOKIES.get('username')
     usertype = request.COOKIES.get('type')
-    if len(username) == 0 or usertype != 'student':
+    if len(username) == 0:
         response = redirect('/user/login')
         response.set_cookie('username', None)
         response.set_cookie('type', None)
@@ -102,7 +101,10 @@ def user_successLogin(request):
         return redirect('/user/successLogin')
     student = User.objects.filter(email=username).values()
     data = student[0]
-    return render(request, 'successLogin.html', {'data': data})
+    if usertype == 'student':
+        return render(request, 'successLogin.html', {'data': data})
+    elif usertype == 'professional':
+        return render(request, 'successLoginProfessional.html', {'data': data})
 
 def logout(request):
     response = redirect('/user/login')
@@ -214,12 +216,13 @@ def instructor_logout(request):
 # Entity related pages
 def entity_login(request):
     try:
-        if len(request.COOKIES.get('username')) > 0 and request.COOKIES.get('type') == 'entity':
+        if len(request.COOKIES.get('username')) > 0 and (request.COOKIES.get('type') == 'College' or request.COOKIES.get('type') == 'Organization'):
             return redirect('/entity/entity_successLogin')
     except Exception as e:
         pass
     if request.method == 'POST':
         global salt
+        print(request.POST)
         email = request.POST.get('email')
         password = request.POST.get('password')
         key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
@@ -228,7 +231,7 @@ def entity_login(request):
             if entity1.password == str(key):
                 response = redirect('/entity/entity_successLogin')
                 response.set_cookie('username', email)
-                response.set_cookie('type', 'entity')
+                response.set_cookie('type', entity1.role)
                 return response
             else:
                 return render(request, 'entity_login.html', {'state': 2})
@@ -239,7 +242,6 @@ def entity_login(request):
 def entity_register(request):
     if request.method == 'POST':
         global salt
-        print(request.POST)
         try:
             first_name=request.POST.get('fname')
             last_name=request.POST.get('lname')
@@ -247,7 +249,7 @@ def entity_register(request):
             birthDate = request.POST.get('birthDate')
             phone = int(request.POST.get('phone'))
             password = request.POST.get('password')
-            country = request.POST.get('country')
+            country = request.POST.get('Country')
             state = request.POST.get('state')
             skill = request.POST.get('skill_set')
             role = request.POST.get('inlineRadioOptions')
@@ -271,6 +273,7 @@ def entity_register(request):
                     description=request.POST.get('college_description'),
                     password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
                 )
+                entity1.save()
             elif role == 'Organization':
                 entity1 = entity(
                     first_name=first_name,
@@ -288,7 +291,7 @@ def entity_register(request):
                     description=request.POST.get('organization_description'),
                     password=str(hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)),
                 )
-            entity1.save()
+                entity1.save()
             return render(request, 'entity_register.html', {'state': 2})
         except Exception as e:
             return render(request, 'entity_register.html', {'state': 4})
@@ -300,7 +303,7 @@ def entity_forgot_password(request):
 def entity_successLogin(request):
     username = request.COOKIES.get('username')
     usertype = request.COOKIES.get('type')
-    if len(username) == 0 or usertype != 'entity':
+    if len(username) == 0:
         response = redirect('/entity/entity_login')
         response.set_cookie('username', None)
         response.set_cookie('type', None)
@@ -321,7 +324,11 @@ def entity_successLogin(request):
         return redirect('/entity/entity_successLogin')
     entity1 = entity.objects.filter(email=username).values()
     data = entity1[0]
-    return render(request, 'entity_successLogin.html', {'data' : data})
+    print(data)
+    if usertype == 'College':
+        return render(request, 'college_successLogin.html', {'data' : data})
+    elif usertype == 'Organization':
+        return render(request, 'organisation_successLogin.html', {'data': data})
 
 def entity_logout(request):
     response = redirect('/entity/entity_login')
