@@ -350,6 +350,8 @@ def admin_login(request):
         key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
         try:
             admin = adminUser.objects.get(email=email)
+            print(admin.password)
+            print(str(key))
             if admin.password == str(key):
                 response = redirect('/admin/admin_successLogin')
                 response.set_cookie('username', email)
@@ -409,8 +411,6 @@ def entity_list(request):
     entity_data = entity.objects.all()
     return render(request, 'entity_list.html', {'entities': entity_data})
 
-
-
 def addprogram(request):
     if request.method == 'POST':
         program_name=request.POST['program']
@@ -418,8 +418,6 @@ def addprogram(request):
         p.save()
     program_name=program_details.objects.all()     
     return render(request, 'admin_addstructure1.html', {'program_name':program_name })
-         
-        
     
 def addprogram2(request):
     if request.method == 'POST':

@@ -17,10 +17,14 @@ def new_course(request):
         if len(course_cat) == 0:
             course_cat = Course_category(category_name=category_name)
             course_cat.save()
+        else:
+            course_cat = course_cat[0]
         course_subcat = Course_subcategory.objects.filter(subcategory_name=subcategory_name)
         if len(course_subcat) == 0:
             course_subcat = Course_subcategory(subcategory_name=subcategory_name, category=course_cat)
             course_subcat.save()
+        else:
+            course_subcat = course_subcat[0]
         course = Course(
             subcategory=course_subcat,
             subcategory_name=subcategory_name,
@@ -43,12 +47,12 @@ def course_resource(request):
         resources.append(str(res+1))
     if request.method == 'POST':
         course = Course.objects.filter(course_id=courseID)[0]
-        for resourse in resources :
+        for res in resources:
             Course_res = Course_resource(
                 course=course,
-                resourse_name=request.POST.get(resource+'_name'),
-                resourse_link=request.POST.get(resource+'_link'),
-                resourse_length=request.POST.get(resource+'_length'),
+                resourse_name=request.POST.get(res+'_name'),
+                resourse_link=request.POST.get(res+'_link'),
+                resourse_length=request.POST.get(res+'_length'),
             )
             Course_res.save()
         response = redirect('/admin/save_course')
@@ -64,10 +68,6 @@ def save_course(request):
             Course.objects.filter(course_id=courseID).delete()
         return redirect('/admin/admin_manage')
     return render(request, 'courses/new_course_save.html')
-
-def view_course(request, courseID):
-    course = Course.objects.filter(course_id=courseID).values()
-    pass
 
 def edit_course(request, courseID):
     course = Course.objects.filter(course_id=courseID).values()
@@ -91,14 +91,18 @@ def delete_course(request, courseID):
     Course.objects.filter(course_id=courseID).delete()
     return redirect('/course/list_course')
 
+def view_course(request, courseID):
+    course = Course.objects.filter(course_id=courseID)[0]
+    return render(request, 'courses/view_course.html', {'data': course})
+
 # Course pages
 def coreui(request):
     if request.COOKIES.get('username') == None or request.COOKIES.get('username') == 'None':
         return redirect('/user/login')
-    uicourse = Course.objects.filter(course_id=2)
-    uicourse_resource = Course_resource.objects.filter(course=uicourse[0])
-    similar = Course.objects.filter(category_name=uicourse[0].category_name)
-    return render(request, 'courses/course.html', {'course' : uicourse[0], 'course_resource' : uicourse_resource, 'similar' : similar, 'lectures' : len(uicourse_resource)})
+    course = Course.objects.filter(course_id=26)
+    course_resource = Course_resource.objects.filter(course=course[0])
+    similar = Course.objects.filter(category_name=course[0].category_name)
+    return render(request, 'courses/coreui.html', {'course' : course[0], 'course_resource' : course_resource, 'similar' : similar, 'lectures' : len(course_resource)})
 
 def backend(request):
     return render(request, 'courses/backend.html')
@@ -160,43 +164,39 @@ def nodejs(request):
 def coursedetails(request):
     return render(request, 'courses/coursedetails.html')
 
-
-#subcurses
-
+#subcourses
 def advancejava(request):
     return render(request, 'courses/coursepage/advancejava.html')
+
 def dotnetcore(request):
-    return render(request,
-                   'courses/coursepage/dotnetcore.html')
+    return render(request, 'courses/coursepage/dotnetcore.html')
+
 def adwordexpert(request):
     return render(request, 'courses/coursepage/adwordexpert.html')
+
 def adwordsfoundation(request):
     return render(request, 'courses/coursepage/adwordsfoundation.html')
 
 def agile(request):
     return render(request, 'courses/coursepage/agile.html')
 
-
-
 def aimlfoundationcourse(request):
     return render(request, 'courses/coursepage/aimlfoundationcourse.html')
 
-
-
 def aimlexpertcourse(request):
     return render(request, 'courses/coursepage/aimlexpertcourse.html')
+
 def android(request):
     return render(request, 'courses/coursepage/android.html')
+
 def ansible(request):
     return render(request, 'courses/coursepage/ansible.html')
 
 def automation(request):
     return render(request, 'courses/coursepage/automation.html')
 
-
 def awscloudpractitioner(request):
     return render(request, 'courses/coursepage/awscloudpractitioner.html')
-
 
 def awsdeveloperassociate(request):
     return render(request,'courses/coursepage/awsdeveloperassociate.html')
@@ -215,63 +215,54 @@ def awstechnicalessentials(request):
   
 def branding(request):
     return render(request,'courses/coursepage/branding.html')
-  
-  
+    
 def ccsp(request):
     return render(request,'courses/coursepage/ccsp.html')
-
 
 def ceh(request):
     return render(request,'courses/coursepage/ceh.html')
 
-
 def cisa(request):
     return render(request,'courses/coursepage/cisa.html')
-
 
 def chef(request):
     return render(request,'courses/coursepage/chef.html')
 
 def cism(request):
     return render(request,'courses/coursepage/cism.html')
+
 def smm(request):
     return render(request,'courses/coursepage/smm.html')
+
 def smo(request):
     return render(request,'courses/coursepage/smo.html')
+
 def cloudtesting(request):
     return render(request,'courses/coursepage/cloudtesting.html')
+
 def comptiasecurity(request):
     return render(request,'courses/coursepage/comptiasecurity.html')
 
 def contentmarketing(request):
     return render(request,'courses/coursepage/contentmarketing.html')
 
-
 def corejava(request):
     return render(request,'courses/coursepage/corejava.html')
-
 
 def dataanalytics(request):
     return render(request,'courses/coursepage/dataanalytics.html')
 
-
 def datascientistcertification(request):
     return render(request,'courses/coursepage/datascientistcertification.html')
-
 
 def deeplearning(request):
     return render(request,'courses/coursepage/deeplearning.html')
 
-
-
 def devopsexpert(request):
     return render(request,'courses/coursepage/devopsexpert.html')
 
-
-
 def devopsfoundation(request):
     return render(request,'courses/coursepage/devopsfoundation.html')
-
 
 def digitalmarketingexpert(request):
     return render(request,'courses/coursepage/digitalmarketingexpert.html')
@@ -279,18 +270,11 @@ def digitalmarketingexpert(request):
 def digitalmarketingfoundation(request):
     return render(request,'courses/coursepage/digitalmarketingfoundation.html')
 
-
-
 def docker(request):
     return render(request,'courses/coursepage/docker.html')
 
-
-
-
 def dsbootcamp(request):
     return render(request,'courses/coursepage/dsbootcamp.html')
-
-
 
 def flutter(request):
     return render(request,'courses/coursepage/flutter.html')
@@ -298,66 +282,47 @@ def flutter(request):
 def fullstacknet(request):
     return render(request,'courses/coursepage/fullstacknet.html')
 
-
 def fullstacktesting(request):
     return render(request,'courses/coursepage/fullstacktesting.html')
-
 
 def golang(request):
     return render(request,'courses/coursepage/golang.html')
 
-
 def hadoop(request):
     return render(request,'courses/coursepage/hadoop.html')
-
-
-
 
 def inforln(request):
     return render(request,'courses/coursepage/inforln.html')
 
-
 def ionic(request):
     return render(request,'courses/coursepage/ionic.html')
-
 
 def ios(request):
     return render(request,'courses/coursepage/ios.html')
 
-
-
 def itilfoundation(request):
     return render(request,'courses/coursepage/itilfoundation.html')
-
 
 def kubernets(request):
     return render(request,'courses/coursepage/kubernets.html')
 
-
 def manualtesting(request):
     return render(request,'courses/coursepage/manualtesting.html')
-
 
 def mean(request):
     return render(request,'courses/coursepage/mean.html')
 
-
 def measn(request):
     return render(request,'courses/coursepage/measn.html')
 
-
-
 def mevn(request):
     return render(request,'courses/coursepage/mevn.html')
-
 
 def microsoftazureexpertcertification(request):
     return render(request,'courses/coursepage/microsoftazureexpertcertification.html')
 
 def microsoftazurefundamentals(request):
     return render(request,'courses/coursepage/microsoftazurefundamentals.html')
-
-
 
 def microsoftdynamics(request):
     return render(request,'courses/coursepage/microsoftdynamics.html')
@@ -368,10 +333,8 @@ def mlwithpython(request):
 def naturallanguageprocessing(request):
     return render(request,'courses/coursepage/naturallanguageprocessing.html')
 
-
 def onsenui(request):
     return render(request,'courses/coursepage/onsenui.html')
-
 
 def openstack(request):
     return render(request,'courses/coursepage/openstack.html')
@@ -382,55 +345,44 @@ def oracle(request):
 def pmiacp(request):
     return render(request,'courses/coursepage/pmiacp.html')
 
-
 def pmp(request):
     return render(request,'courses/coursepage/pmp.html')
-
 
 def prince2(request):
     return render(request,'courses/coursepage/prince2.html')
 
-
 def python(request):
     return render(request,'courses/coursepage/python.html')
-
-
 
 def reactnative(request):
     return render(request,'courses/coursepage/reactnative.html')
 
-
-
 def remedy(request):
     return render(request,'courses/coursepage/remedy.html')
+
 def servicenow(request):
     return render(request,'courses/coursepage/servicenow.html')
-
 
 def rootstack(request):
     return render(request,'courses/coursepage/rootstack.html')
 
 def rprogramming(request):
     return render(request,'courses/coursepage/rprogramming.html')
+
 def ruby(request):
     return render(request,'courses/coursepage/ruby.html')
 
 def rubyfullstack(request):
     return render(request,'courses/coursepage/rubyfullstack.html')
 
-
 def salesforce(request):
     return render(request,'courses/coursepage/salesforce.html')
-
 
 def sap(request):
     return render(request,'courses/coursepage/sap.html')
 
-
-
 def scm(request):
     return render(request,'courses/coursepage/scm.html')
-
 
 def seo(request):
     return render(request,'courses/coursepage/seo.html')
@@ -440,26 +392,3 @@ def xamarin(request):
 
 def vuejs(request):
     return render(request,'courses/coursepage/vuejs.html')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
