@@ -427,16 +427,6 @@
                     <div class = "duration">
                         {{ lectures }} Lectures
 					</div>
-					<script>
-						var resources = {};
-						var i = 1;
-					</script>
-					{% for resource in course_resource %}
-						<script>
-							resources['{{resource.resourse_name}}'] = i;
-							i += 1;
-						</script>
-					{% endfor %}
 					
 					{% for resource in course_resource %}
                     <div class="lec-title" id="{{ resource.resourse_name }}">
@@ -447,7 +437,7 @@
 						button = document.getElementById("{{ resource.resourse_name }}");
 						button.addEventListener("click", function (){
 							// Change this to the video source for the lecture
-							location.replace('http://127.0.0.1:8000/courses/coursepage/coreui/'+resources['{{resource.resourse_name}}']);
+							window.frames['course-img'].src = '{{ resource.resourse_link }}';
 						});
 					</script>
 					{% endfor %}
