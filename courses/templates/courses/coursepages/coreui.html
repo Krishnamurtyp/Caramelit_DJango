@@ -415,10 +415,7 @@
             <div class="row container-fluid">
                 <div class="col-md-8">
                     <div class="newDiv">
-					<video id="course-img" controls>
-						<!-- Set this to the first video -->
-						<source src='{{ resources.resourse_length }}' type='video/mp4'>
-					</video>
+						<iframe id="course-img" src="{{ resource }}" frameborder="0" width="1280" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 					</div>
                 </div>
                 
@@ -429,7 +426,17 @@
                     <div class="toprow">
                     <div class = "duration">
                         {{ lectures }} Lectures
-                    </div>
+					</div>
+					<script>
+						var resources = {};
+						var i = 1;
+					</script>
+					{% for resource in course_resource %}
+						<script>
+							resources['{{resource.resourse_name}}'] = i;
+							i += 1;
+						</script>
+					{% endfor %}
 					
 					{% for resource in course_resource %}
                     <div class="lec-title" id="{{ resource.resourse_name }}">
@@ -437,16 +444,13 @@
                         <div class= "lec-duration">{{ resource.resourse_length }}</div>
 					</div>
 					<script>
-						video = document.getElementById("course-img");
 						button = document.getElementById("{{ resource.resourse_name }}");
 						button.addEventListener("click", function (){
 							// Change this to the video source for the lecture
-							video.innerHTML = "<source src='{{ resource.resourse_length }}' type='video/mp4'>"
+							location.replace('http://127.0.0.1:8000/courses/coursepage/coreui/'+resources['{{resource.resourse_name}}']);
 						});
 					</script>
 					{% endfor %}
-                         
-            
         </div>    
         </div>
          </div>

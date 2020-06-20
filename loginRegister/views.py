@@ -350,8 +350,6 @@ def admin_login(request):
         key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
         try:
             admin = adminUser.objects.get(email=email)
-            print(admin.password)
-            print(str(key))
             if admin.password == str(key):
                 response = redirect('/admin/admin_successLogin')
                 response.set_cookie('username', email)

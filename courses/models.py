@@ -29,6 +29,6 @@ class Course(models.Model):
 class Course_resource(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     resourse_name = models.CharField(max_length=100)
-    resourse_link = models.CharField(max_length=100)
+    resourse_link = models.CharField(max_length=200)
     resourse_length = models.CharField(max_length=10)
     date_of_creation = models.DateTimeField(default=timezone.now)

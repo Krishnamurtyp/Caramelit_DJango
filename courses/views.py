@@ -96,13 +96,13 @@ def view_course(request, courseID):
     return render(request, 'courses/view_course.html', {'data': course})
 
 # Course pages
-def coreui(request):
+def coreui(request, moduleNo):
     if request.COOKIES.get('username') == None or request.COOKIES.get('username') == 'None':
         return redirect('/user/login')
     course = Course.objects.filter(course_id=26)
     course_resource = Course_resource.objects.filter(course=course[0])
     similar = Course.objects.filter(category_name=course[0].category_name)
-    return render(request, 'courses/coreui.html', {'course' : course[0], 'course_resource' : course_resource, 'similar' : similar, 'lectures' : len(course_resource)})
+    return render(request, 'courses/coursepages/coreui.html', {'course' : course[0], 'course_resource' : course_resource, 'resource' : course_resource[moduleNo-1].resourse_link, 'lectures' : len(course_resource)})
 
 def backend(request):
     return render(request, 'courses/backend.html')
