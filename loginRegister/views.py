@@ -90,7 +90,6 @@ def forgot_password(request):
         else:
             user = user[0]
             encoded_jwt = jwt.encode({'email': user.email, 'type': typeUser, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)}, 'caramelitdjangosecretkeytoken', 'HS256')
-            print(encoded_jwt)
             try:
                 msg = "Hello,\nYou requested a password change for your profile.\nHere is your link to change your password: http://127.0.0.1:8000/changePassword/"+str(encoded_jwt)[2:-1]+"\nThis link will expire in 15 minutes"
                 send_mail("Password Reset", msg, 'Madarauchiha3524@gmail.com', [user.email], fail_silently=False,)
@@ -112,7 +111,6 @@ def changePassword(request, token):
             user = entity.objects.filter(email=data['email'])
         elif data['type'] == 'admin':
             user = adminUser.objects.filter(email=data['email'])
-        print('hmelo')
         if len(user) == 0:
             return render(request, 'successResetPassword.html', {'state': 2})
     except Exception as e:
