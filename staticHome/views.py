@@ -25,6 +25,7 @@ def products(request):
 # Industries related pages
 def automotive(request):
     return render(request, 'staticHome/industries/automotive.html')
+    
 def program(request):
     return render(request, 'staticHome/program.html')
 

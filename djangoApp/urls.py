@@ -29,7 +29,8 @@ urlpatterns = [
     path('consortium', staticviews.consortium, name="consortium"),
     path('academy', staticviews.academy, name="academy"),
     path('products', staticviews.products, name="products"),
-     path('program', staticviews.program, name="program"),
+    path('program', staticviews.program, name="program"),
+    path('changePassword/<str:token>', loginviews.changePassword, name='changePassword'),
     # Contact forms
     path('contact/contactform', staticviews.contactform, name="contactform"),
     path('contact/academycontact', staticviews.academycontact, name="academycontact"),
@@ -37,26 +38,25 @@ urlpatterns = [
     # User oriented pages
     path('user/login', loginviews.user_login, name='user_login'),
     path('user/register', loginviews.user_register, name='user_register'),
-    path('user/forgot-password', loginviews.user_forgot_password, name='user_forgot_password'),
+    path('user/forgot-password', loginviews.forgot_password, name='user_forgot_password'),
     path('user/successLogin', loginviews.user_successLogin, name='user_successLogin'),
     path('user/logout', loginviews.logout, name='user_logout'),
-    path('user/successPasswordReset', loginviews.successPasswordReset, name='success_password_reset'),
     # Instructor oriented pages
     path('instructor/instructor_login', loginviews.instructor_login, name='instructor_login'),
     path('instructor/instructor_register', loginviews.instructor_register, name='instructor_register'),
-    path('instructor/instructor_forgot-password', loginviews.instructor_forgot_password, name='instructor_forgot_password'),
+    path('instructor/instructor_forgot-password', loginviews.forgot_password, name='instructor_forgot_password'),
     path('instructor/instructor_successLogin', loginviews.instructor_successLogin, name='instructor_successLogin'),
     path('instructor/logout', loginviews.instructor_logout, name='instructor_logout'),
     # Entity oriented pages
     path('entity/entity_login', loginviews.entity_login, name='entity_login'),
     path('entity/entity_register', loginviews.entity_register, name='entity_register'),
-    path('entity/entity_forgot-password', loginviews.entity_forgot_password, name='entity_forgot_password'),
+    path('entity/entity_forgot-password', loginviews.forgot_password, name='entity_forgot_password'),
     path('entity/entity_successLogin', loginviews.entity_successLogin, name='entity_successLogin'),
     path('entity/logout', loginviews.entity_logout, name='entity_logout'),
     # Admin oriented pages
     path('admin/admin_login', loginviews.admin_login, name='admin_login'),
     path('admin/admin_register', loginviews.admin_register, name='admin_register'),
-    path('admin/admin_forgot-password', loginviews.admin_forgot_password, name='admin_forgot_password'),
+    path('admin/admin_forgot-password', loginviews.forgot_password, name='admin_forgot_password'),
     path('admin/admin_successLogin', loginviews.admin_successLogin, name='admin_successLogin'),
     
     path('admin/admin_manage', loginviews.admin_manage, name='admin_manage'),

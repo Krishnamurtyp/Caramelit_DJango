@@ -134,7 +134,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'Madarauchiha3524@gmail.com'
-EMAIL_HOST_PASSWORD = 'Madara@123456'
+EMAIL_HOST_PASSWORD = 'bsviesavmthfjqcy'
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
+from django.core.mail import send_mail
 from .models import User, adminUser, instructor, entity, program_details, subprogram_details, course_names
-import hashlib
+import hashlib, jwt, datetime
 from django.http import HttpResponse
 
 salt = b'vB\\xa6\\xc4M(\\x07\\xbd\\xcc\\x00\\xf5*\\x93\\xb9\\xdb{\\xa4)\\xa4\\xff\\xe3_Z\\x87<\\xc4\\xcc\\x93\\xe5\\xa3\\x8f\\xdb'
@@ -71,8 +72,68 @@ def user_register(request):
             return render(request, 'register.html', {'state': 4})
     return render(request, 'register.html')
 
-def user_forgot_password(request):
+def forgot_password(request):
+    if request.method == 'POST':
+        global salt
+        email = request.POST.get('email')
+        typeUser = request.POST.get('typeUser')
+        if typeUser == 'user':
+            user = User.objects.filter(email=email)
+        elif typeUser == 'instructor':
+            user = instructor.objects.filter(email=email)
+        elif typeUser == 'entity':
+            user = entity.objects.filter(email=email)
+        elif typeUser == 'admin':
+            user = adminUser.objects.filter(email=email)
+        if len(user) == 0:
+            return render(request, 'forgotPassword.html', {'state': 2})
+        else:
+            user = user[0]
+            encoded_jwt = jwt.encode({'email': user.email, 'type': typeUser, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)}, 'caramelitdjangosecretkeytoken', 'HS256')
+            print(encoded_jwt)
+            try:
+                msg = "Hello,\nYou requested a password change for your profile.\nHere is your link to change your password: http://127.0.0.1:8000/changePassword/"+str(encoded_jwt)[2:-1]+"\nThis link will expire in 15 minutes"
+                send_mail("Password Reset", msg, 'Madarauchiha3524@gmail.com', [user.email], fail_silently=False,)
+                return render(request, 'forgotPassword.html', {'state': 3})
+            except Exception as e:
+                return render(request, 'forgotPassword.html', {'state': 4})
     return render(request, 'forgotPassword.html')
+
+def changePassword(request, token):
+    global salt
+    data = ''
+    try:
+        data = jwt.decode(token, 'caramelitdjangosecretkeytoken', algorithms='HS256')
+        if data['type'] == 'user':
+            user = User.objects.filter(email=data['email'])
+        elif data['type'] == 'instructor':
+            user = instructor.objects.filter(email=data['email'])
+        elif data['type'] == 'entity':
+            user = entity.objects.filter(email=data['email'])
+        elif data['type'] == 'admin':
+            user = adminUser.objects.filter(email=data['email'])
+        print('hmelo')
+        if len(user) == 0:
+            return render(request, 'successResetPassword.html', {'state': 2})
+    except Exception as e:
+        return render(request, 'successResetPassword.html', {'state': 1})
+    
+    if request.method == 'GET':
+        return render(request, 'successResetPassword.html', {'state': 3})
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+        if data['type'] == 'user':
+            user = User.objects.get(email=data['email'])
+        elif data['type'] == 'instructor':
+            user = instructor.objects.get(email=data['email'])
+        elif data['type'] == 'entity':
+            user = entity.objects.get(email=data['email'])
+        elif data['type'] == 'admin':
+            user = adminUser.objects.get(email=data['email'])
+        user.password = str(key)
+        user.save()
+        return render(request, 'successResetPassword.html', {'state': 4})
 
 def user_successLogin(request):
     username = request.COOKIES.get('username')
@@ -172,9 +233,6 @@ def instructor_register(request):
         except Exception as e:
             return render(request, 'instructor_register.html', {'state': 4})
     return render(request, 'instructor_register.html')
-
-def instructor_forgot_password(request):
-    return render(request, 'instructor_forgotPassword.html')
 
 def instructor_successLogin(request):
     username = request.COOKIES.get('username')
@@ -297,9 +355,6 @@ def entity_register(request):
             return render(request, 'entity_register.html', {'state': 4})
     return render(request, 'entity_register.html')
 
-def entity_forgot_password(request):
-    return render(request, 'entity_forgot-password.html')
-
 def entity_successLogin(request):
     username = request.COOKIES.get('username')
     usertype = request.COOKIES.get('type')
@@ -384,11 +439,16 @@ def admin_register(request):
             return render(request, 'admin_register.html', {'state': 4})
     return render(request, 'admin_register.html')
 
-def admin_forgot_password(request):
-    return render(request, 'admin_forgotpassword.html')
-
 def admin_successLogin(request):
-    admin = adminUser.objects.get(email=request.COOKIES.get('username'))
+    username = request.COOKIES.get('username')
+    usertype = request.COOKIES.get('type')
+    if len(username) == 0:
+        response = redirect('/admin/admin_login')
+        response.set_cookie('username', None)
+        response.set_cookie('type', None)
+        return response
+    admin = adminUser.objects.filter(email=username)[0]
+    print(admin)
     return render(request, 'admin_successLogin.html', {'name': admin.name})
 
 def admin_logout(request):
