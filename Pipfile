@@ -11,6 +11,7 @@ django = "*"
 djongo = "*"
 pillow = "*"
 pyjwt = "*"
+pymongo = "*"
 
 [requires]
 python_version = "3.8"
